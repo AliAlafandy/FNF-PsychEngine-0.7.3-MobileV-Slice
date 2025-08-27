@@ -92,12 +92,12 @@ class TitleState extends MusicBeatState
 		#if CHECK_FOR_UPDATES
 		if(ClientPrefs.data.checkForUpdates && !closedState) {
 			trace('checking for update');
-			var http = new haxe.Http("https://raw.githubusercontent.com/AliAlafandy/FNF-PsychEngine-0.7.3-Template/main/gitVersion.txt");
+			var http = new haxe.Http("https://raw.githubusercontent.com/AliAlafandy/FNF-PsychEngine-0.7.3-MobileV-Slice/main/gitVersion.txt");
 
 			http.onData = function (data:String)
 			{
 				updateVersion = data.split('\n')[0].trim();
-				var curVersion:String = MainMenuState.psychEngineVersion.trim();
+				var curVersion:String = MainMenuState.portVersion.trim();
 				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
 				if(updateVersion != curVersion) {
 					trace('versions arent matching!');
@@ -259,31 +259,59 @@ class TitleState extends MusicBeatState
 			logoBl.shader = swagShader.shader;
 		}
 
-		titleText = new FlxSprite(titleJSON.startx, titleJSON.starty);
-		titleText.frames = Paths.getSparrowAtlas('titleEnter');
-		var animFrames:Array<FlxFrame> = [];
-		@:privateAccess {
-			titleText.animation.findByPrefix(animFrames, "ENTER IDLE");
-			titleText.animation.findByPrefix(animFrames, "ENTER FREEZE");
+		if (controls.mobileC) {
+			titleTextMobile = new FlxSprite(100, 100);
+			titleTextMobile.frames = Paths.getSparrowAtlas('titleEnter_mobile');
+			var animFrames:Array<FlxFrame> = [];
+			@:privateAccess {
+				titleTextMobile.animation.findByPrefix(animFrames, "ENTER IDLE");
+				titleTextMobile.animation.findByPrefix(animFrames, "ENTER FREEZE");
+			}
+
+			if (animFrames.length > 0) {
+				newTitle = true;
+
+				titleTextMobile.animation.addByPrefix('idle', "ENTER IDLE", 24);
+				titleTextMobile.animation.addByPrefix('press', ClientPrefs.data.flashing ? "ENTER PRESSED" : "ENTER FREEZE", 24);
+			}
+			else {
+				newTitle = false;
+
+				titleTextMobile.animation.addByPrefix('idle', "Press Enter to Begin", 24);
+				titleTextMobile.animation.addByPrefix('press', "ENTER PRESSED", 24);
+			}
+
+			titleTextMobile.animation.play('idle');
+			titleTextMobile.updateHitbox();
+			// titleTextMobile.screenCenter(X);
+			add(titleTextMobile);
+		} else {
+			titleText = new FlxSprite(titleJSON.startx, titleJSON.starty);
+			titleText.frames = Paths.getSparrowAtlas('titleEnter');
+			var animFrames:Array<FlxFrame> = [];
+			@:privateAccess {
+				titleText.animation.findByPrefix(animFrames, "ENTER IDLE");
+				titleText.animation.findByPrefix(animFrames, "ENTER FREEZE");
+			}
+
+			if (animFrames.length > 0) {
+				newTitle = true;
+
+				titleText.animation.addByPrefix('idle', "ENTER IDLE", 24);
+				titleText.animation.addByPrefix('press', ClientPrefs.data.flashing ? "ENTER PRESSED" : "ENTER FREEZE", 24);
+			}
+			else {
+				newTitle = false;
+
+				titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
+				titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
+			}
+
+			titleText.animation.play('idle');
+			titleText.updateHitbox();
+			// titleText.screenCenter(X);
+			add(titleText);
 		}
-		
-		if (animFrames.length > 0) {
-			newTitle = true;
-			
-			titleText.animation.addByPrefix('idle', "ENTER IDLE", 24);
-			titleText.animation.addByPrefix('press', ClientPrefs.data.flashing ? "ENTER PRESSED" : "ENTER FREEZE", 24);
-		}
-		else {
-			newTitle = false;
-			
-			titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
-			titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
-		}
-		
-		titleText.animation.play('idle');
-		titleText.updateHitbox();
-		// titleText.screenCenter(X);
-		add(titleText);
 
 		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
 		logo.antialiasing = ClientPrefs.data.antialiasing;
@@ -587,7 +615,7 @@ class TitleState extends MusicBeatState
 				case 15:
 					addMoreText('Night');
 				case 16:
-					addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
+					addMoreText("Funkin'"); // credTextShit.text += '\nFunkin';
 
 				case 17:
 					skipIntro();
