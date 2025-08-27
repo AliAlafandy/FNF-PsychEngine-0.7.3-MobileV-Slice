@@ -9,6 +9,7 @@ import options.OptionsState;
 
 class MainMenuState extends MusicBeatState
 {
+	public static var portingVersion:String = '1.0.0';
 	public static var psychEngineVersion:String = '0.7.3'; // This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
@@ -27,11 +28,6 @@ class MainMenuState extends MusicBeatState
 		#end
 		
 		'credits',
-		
-		#if !switch
-		'donate',
-		#end
-		
 		'options'
 	];
 
@@ -98,6 +94,10 @@ class MainMenuState extends MusicBeatState
 			menuItem.screenCenter(X);
 		}
 
+		var portingVer:FlxText = new FlxText(12, FlxG.height - 64, 0, "Porting v" + portingVersion, 12);
+		portingVer.scrollFactor.set();
+		portingVer.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(portingVer);
 		var psychVer:FlxText = new FlxText(12, FlxG.height - 44, 0, "Psych Engine v" + psychEngineVersion, 12);
 		psychVer.scrollFactor.set();
 		psychVer.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -159,7 +159,7 @@ class MainMenuState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 				if (optionShit[curSelected] == 'donate')
 				{
-					CoolUtil.browserLoad('https://ninja-muffin24.itch.io/funkin');
+					CoolUtil.browserLoad('https://youtube.com/@alialafandy');
 				}
 				else
 				{
