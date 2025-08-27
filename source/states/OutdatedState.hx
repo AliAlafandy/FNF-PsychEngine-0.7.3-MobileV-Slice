@@ -15,7 +15,7 @@ class OutdatedState extends MusicBeatState
 		var guh:String;
 
 		if (controls.mobileC) {
-			guh = "Sup kiddo, looks like you're running an   \n
+			guh = "Sup bro, looks like you're running an   \n
 			outdated version of This Port (" + MainMenuState.portVersion + "),\n
 			please update to " + TitleState.updateVersion + "!\n
 			Press B to proceed anyway.\n
