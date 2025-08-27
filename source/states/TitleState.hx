@@ -260,7 +260,7 @@ class TitleState extends MusicBeatState
 		}
 
 		if (controls.mobileC) {
-			titleTextMobile = new FlxSprite(100, 100);
+			titleTextMobile = new FlxSprite(100, -100);
 			titleTextMobile.frames = Paths.getSparrowAtlas('titleEnter_mobile');
 			var animFrames:Array<FlxFrame> = [];
 			@:privateAccess {
